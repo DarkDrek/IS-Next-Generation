@@ -1,0 +1,67 @@
+@prefix foaf:  <http://xmlns.com/foaf/0.1/> .
+@prefix bio:   <http://purl.org/vocab/bio/0.1/> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix xsd: <https://www.w3.org/2001/XMLSchema#> .
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix sf: <http://starfleet.db/#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix geo: <http://sws.geonames.org/#> .
+
+
+# Abox
+
+sf:Jean-Luc_Picard a foaf:Person 
+    ; foaf:firstName  "Jean-Luc"^^xsd:string
+    ; foaf:familyName "Picard"^^xsd:string
+    ; foaf:name       "Jean-Luc Picard"^^xsd:string
+    ; foaf:title      "Captain"^^xsd:string 
+    ; sf:Dienstnummer "SP-937-215"
+    ; foaf:member sf:Starfleet
+    .
+
+sf:Jean-Luc_Picard_Enrollment a bio:Enrollment 
+    ; dc:date "2322" 
+    ; bio:principal sf:Jean-Luc_Picard
+    .
+
+sf:William_Riker_Birth a bio:Birth
+    ; dc:date "2335-04-15"
+    ; bio:principal sf:William_Riker
+    ; bio:parent sf:Kyle_Riker
+    ; bio:parent sf:Betty_Riker
+    ; bio:place geo:5879092 #Alaska
+    .
+
+sf:William_Riker a foaf:Person 
+    ; foaf:name "William Thomas Riker"^^xsd:string
+    ; foaf:member sf:Starfleet
+    .
+
+sf:Kyle_Riker a foaf:Person .
+sf:Betty_Riker a foaf:Person .
+sf:Deanna_Troi a foaf:Person .
+
+sf:Starfleet bio:employer sf:William_Riker .
+sf:Kyle_Riker bio:father sf:William_Riker .
+sf:Betty_Riker bio:mother sf:William_Riker .
+sf:William_Riker bio:partner sf:Deanna_Troi .
+sf:Deanna_Troi bio:partner sf:William_Riker .
+
+sf:Starfleet a foaf:Organization .
+
+# ------------------------------------------------------
+
+# Tbox
+
+sf:knows a rdf:Property 
+    ; rdfs:domain foaf:Person 
+    ; rdfs:range rdfs:Resource 
+    .
+
+sf:Dienstnummer a rdf:Property 
+    ; rdfs:datatype xsd:string
+    ; rdfs:domain foaf:Person
+    ; rdfs:subProperty sf:knows
+    .
+
+# Mehr T-Box

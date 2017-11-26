@@ -111,3 +111,6 @@ local.properties
 .cache-main
 .scala_dependencies
 .worksheet
+out\.txt
+
+out2\.txt

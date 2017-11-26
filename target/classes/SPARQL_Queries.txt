@@ -1,0 +1,60 @@
+# Group Graph Pattern
+# Get URI of Person and Name if available
+SELECT ?uri ?name
+WHERE {
+    ?person foaf:person  ?uri .
+    OPTIONAL { ?person foaf:name ?name }
+}
+
+
+# filters to define constraints
+# Get Persons with a Partner
+SELECT ?person
+WHERE {
+    ?person rdf:type  foaf:Person .
+    FILTER { { ?p1 bio:partner ?person } UNION { ?person bio:partner ?p1 } }
+}
+
+
+# a negation
+# Get Persons without Names
+SELECT ?person
+WHERE {
+    ?person rdf:type  foaf:Person .
+    FILTER NOT EXISTS { ?person foaf:name ?name }
+}
+
+
+# an aggregation
+# Show number of members of organisations 
+SELECT ?org  COUNT(?person) AS ?amountMember
+WHERE { ?person foaf:member sf:Starfleet }
+GROUP  BY ?org
+
+
+# solution modifiers
+# get all Members of the starfleet in ascending name order
+SELECT ?name
+WHERE {
+    ?x  foaf:name  ?name .
+    ? x foaf:member sf:Starfleet.
+}
+ORDER BY ASC ( ?name )
+
+# Ask 
+# Ask if Picard knows his Dienstnummer
+ASK {
+  sf:Jean-Luc_Picard sf:knows "SP-937-215".
+} 
+
+# Construct
+# Construct for Family Tree of 
+CONSTRUCT
+ {
+    ?child sf:descendantOf ?mother .
+    ?child sf:descendantOf ?father} 
+    WHERE {
+        ?mother sf:mother ?child .
+        ?father bio:fahter ?child
+    }
+}
