@@ -54,7 +54,7 @@ public class ReadTurtle {
 	static String askSample =
 			"PREFIX sf: <http://starfleet.db/#> " +
 			"ASK { " +
-			  "sf:Jean-Luc_Picard sf:Dienstnummer \"SP-937-215\". " +
+			  "sf:Jean-Luc_Picard sf:knows \"SP-937-215\". " +
 			"}";
 
 	public static void main(String[] args) throws FileNotFoundException {

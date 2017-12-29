@@ -61,7 +61,7 @@ sf:knows a rdf:Property
 sf:Dienstnummer a rdf:Property 
     ; rdfs:datatype xsd:string
     ; rdfs:domain foaf:Person
-    ; rdfs:subProperty sf:knows
+    ; rdfs:subPropertyOf sf:knows
     .
 
 # Mehr T-Box

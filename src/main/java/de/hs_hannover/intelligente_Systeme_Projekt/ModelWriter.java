@@ -51,7 +51,7 @@ public class ModelWriter {
         Property domain = model.createProperty(rdfs + "domain");
         Property range = model.createProperty(rdfs + "range");
         Property datatype = model.createProperty(rdfs + "datatype");
-        Property subProperty = model.createProperty(rdfs + "subProperty");
+        Property subProperty = model.createProperty(rdfs + "subPropertyOf");
 
         Statement statements[] = new Statement[] {
                 model.createStatement(picard, type, person),
