@@ -114,3 +114,5 @@ local.properties
 out\.txt
 
 out2\.txt
+
+target/
