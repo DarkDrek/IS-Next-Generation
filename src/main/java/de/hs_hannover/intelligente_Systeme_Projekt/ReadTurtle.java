@@ -14,6 +14,9 @@ import org.apache.jena.rdf.model.Statement;
 import org.apache.jena.rdf.model.StmtIterator;
 import org.apache.jena.reasoner.Reasoner;
 import org.apache.jena.reasoner.ReasonerRegistry;
+import org.apache.jena.reasoner.rulesys.FBRuleReasoner;
+import org.apache.jena.reasoner.rulesys.GenericRuleReasoner;
+import org.apache.jena.reasoner.rulesys.Rule;
 import org.apache.jena.util.FileManager;
 
 import java.io.FileNotFoundException;
@@ -63,10 +66,19 @@ public class ReadTurtle {
 
 		//model = ModelWriter.WriteModel();
 
-		Reasoner reasoner = ReasonerRegistry.getRDFSSimpleReasoner();
+		Reasoner reasoner;
+
+		reasoner = new GenericRuleReasoner(Rule.rulesFromURL("jena.rules"));
+		reasoner.setDerivationLogging(true);
+		((FBRuleReasoner)reasoner).setTraceOn(true);
+		model = ModelFactory.createInfModel(reasoner, model);
+
+		reasoner = ReasonerRegistry.getRDFSSimpleReasoner();
         model = ModelFactory.createInfModel(reasoner, model);
+
         reasoner = ReasonerRegistry.getRDFSReasoner();
 		model = ModelFactory.createInfModel(reasoner, model);
+
         reasoner = ReasonerRegistry.getTransitiveReasoner();
 		model = ModelFactory.createInfModel(reasoner, model);
 
