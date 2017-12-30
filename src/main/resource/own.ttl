@@ -6,6 +6,7 @@
 @prefix sf: <http://starfleet.db/#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix geo: <http://sws.geonames.org/#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
 
 
 # Abox
@@ -37,7 +38,9 @@ sf:Starfleet bio:employer sf:William_Riker .
 sf:Kyle_Riker bio:father sf:William_Riker .
 sf:Betty_Riker bio:mother sf:William_Riker .
 sf:William_Riker bio:partner sf:Deanna_Troi .
-sf:Deanna_Troi bio:partner sf:William_Riker .
+
+# OWL inferred triple
+#sf:Deanna_Troi bio:partner sf:William_Riker .
 
 # ------------------------------------------------------
 
@@ -67,3 +70,27 @@ sf:William_Riker_Birth a bio:Birth .
 sf:William_Riker a foaf:Person .
 
 sf:Starfleet a foaf:Organization .
+
+#OWL
+
+bio:partner a owl:SymmetricProperty .
+
+bio:father a owl:IrreflexiveProperty .
+
+bio:mother a owl:IrreflexiveProperty .
+
+owl:Thing a [
+    a owl:Restriction ;
+    owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+    owl:onProperty bio:partner ;
+] .
+
+foaf:Person owl:DisjointWith bio:Birth .
+
+sf:StarfleetMember owl:subClassOf [
+    owl:intersectionOf ( foaf:Person [
+        a owl:Restriction ;
+        owl:onProperty foaf:member ;
+        owl:hasValue sf:Starfleet
+    ] )
+] .

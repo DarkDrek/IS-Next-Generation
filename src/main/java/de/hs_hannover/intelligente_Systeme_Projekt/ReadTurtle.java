@@ -6,14 +6,10 @@ import org.apache.jena.query.QueryExecutionFactory;
 import org.apache.jena.query.QueryFactory;
 import org.apache.jena.query.QuerySolution;
 import org.apache.jena.query.ResultSet;
-import org.apache.jena.rdf.model.Model;
-import org.apache.jena.rdf.model.ModelFactory;
-import org.apache.jena.rdf.model.RDFNode;
-import org.apache.jena.rdf.model.Resource;
-import org.apache.jena.rdf.model.Statement;
-import org.apache.jena.rdf.model.StmtIterator;
+import org.apache.jena.rdf.model.*;
 import org.apache.jena.reasoner.Reasoner;
 import org.apache.jena.reasoner.ReasonerRegistry;
+import org.apache.jena.reasoner.ValidityReport;
 import org.apache.jena.reasoner.rulesys.FBRuleReasoner;
 import org.apache.jena.reasoner.rulesys.GenericRuleReasoner;
 import org.apache.jena.reasoner.rulesys.Rule;
@@ -21,6 +17,7 @@ import org.apache.jena.util.FileManager;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.util.Iterator;
 
 public class ReadTurtle {
 	
@@ -64,34 +61,47 @@ public class ReadTurtle {
 		FileManager.get().addLocatorClassLoader(ReadTurtle.class.getClassLoader());
 		Model model = FileManager.get().loadModel("own.ttl", null, "TURTLE");
 
-		//model = ModelWriter.WriteModel();
+		//infModel = ModelWriter.WriteModel();
 
 		Reasoner reasoner;
 
 		reasoner = new GenericRuleReasoner(Rule.rulesFromURL("jena.rules"));
 		reasoner.setDerivationLogging(true);
-		((FBRuleReasoner)reasoner).setTraceOn(true);
-		model = ModelFactory.createInfModel(reasoner, model);
+		//((FBRuleReasoner)reasoner).setTraceOn(true);
+		InfModel infModel = ModelFactory.createInfModel(reasoner, model);
+
+		reasoner = ReasonerRegistry.getOWLReasoner();
+		reasoner.setDerivationLogging(true);
+		//((FBRuleReasoner)reasoner).setTraceOn(true);
+		infModel = ModelFactory.createInfModel(reasoner, infModel);
 
 		reasoner = ReasonerRegistry.getRDFSSimpleReasoner();
-        model = ModelFactory.createInfModel(reasoner, model);
+        infModel = ModelFactory.createInfModel(reasoner, infModel);
 
         reasoner = ReasonerRegistry.getRDFSReasoner();
-		model = ModelFactory.createInfModel(reasoner, model);
+		infModel = ModelFactory.createInfModel(reasoner, infModel);
 
         reasoner = ReasonerRegistry.getTransitiveReasoner();
-		model = ModelFactory.createInfModel(reasoner, model);
+		infModel = ModelFactory.createInfModel(reasoner, infModel);
 
-		model.write(new FileOutputStream("out.txt"), "TURTLE");
+		ValidityReport validityReport = infModel.validate();
+
+		for (Iterator<ValidityReport.Report> it = validityReport.getReports(); it.hasNext(); ) {
+			ValidityReport.Report o = it.next();
+
+			System.out.println(o);
+		}
+
+		infModel.write(new FileOutputStream("out.txt"), "TURTLE");
         ModelWriter.WriteModel().write(new FileOutputStream("out2.txt"), "TURTLE");
 
         //PrintModel(inf);
 
 
-		RunQuery(sampleQueryName, model);
-		RunQuery(groupSample, model, "person", "name");
-		RunQuery(constraintsSample, model, "name");
-		RunAsk(askSample, model);
+		RunQuery(sampleQueryName, infModel);
+		RunQuery(groupSample, infModel, "person", "name");
+		RunQuery(constraintsSample, infModel, "name");
+		RunAsk(askSample, infModel);
 	}
 	
 	static void RunAsk(String s, Model m) {
