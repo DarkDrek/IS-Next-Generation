@@ -95,6 +95,7 @@ sf:StarfleetMember owl:subClassOf [
     ] )
 ] .
 
+#Just for a conflict
 sf:People owl:equivalentClass owl:Nothing.
 
 sf:People owl:equivalentClass [
