@@ -71,9 +71,6 @@ sf:William_Riker a foaf:Person .
 
 sf:Starfleet a foaf:Organization .
 
-sf:Test a foaf:Person .
-sf:Test a foaf:Birth .
-
 #OWL
 
 bio:partner a owl:SymmetricProperty .
@@ -96,4 +93,11 @@ sf:StarfleetMember owl:subClassOf [
         owl:onProperty foaf:member ;
         owl:hasValue sf:Starfleet
     ] )
+] .
+
+sf:People owl:equivalentClass owl:Nothing.
+
+sf:People owl:equivalentClass [
+    rdf:type owl:Class ;
+    owl:oneOf (sf:Jean-Luc_Picard sf:William_Riker)
 ] .

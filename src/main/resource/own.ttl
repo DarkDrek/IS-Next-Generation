@@ -94,3 +94,10 @@ sf:StarfleetMember owl:subClassOf [
         owl:hasValue sf:Starfleet
     ] )
 ] .
+
+sf:People owl:equivalentClass owl:Nothing.
+
+sf:People owl:equivalentClass [
+    rdf:type owl:Class ;
+    owl:oneOf (sf:Jean-Luc_Picard sf:William_Riker)
+] .

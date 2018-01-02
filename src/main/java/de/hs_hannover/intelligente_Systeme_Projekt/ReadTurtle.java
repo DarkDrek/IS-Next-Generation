@@ -75,6 +75,14 @@ public class ReadTurtle {
 		//((FBRuleReasoner)reasoner).setTraceOn(true);
 		infModel = ModelFactory.createInfModel(reasoner, infModel);
 
+		ValidityReport validityReport = infModel.validate();
+
+		for (Iterator<ValidityReport.Report> it = validityReport.getReports(); it.hasNext(); ) {
+			ValidityReport.Report o = it.next();
+
+			System.out.println(o);
+		}
+
 		reasoner = ReasonerRegistry.getRDFSSimpleReasoner();
         infModel = ModelFactory.createInfModel(reasoner, infModel);
 
@@ -83,14 +91,6 @@ public class ReadTurtle {
 
         reasoner = ReasonerRegistry.getTransitiveReasoner();
 		infModel = ModelFactory.createInfModel(reasoner, infModel);
-
-		ValidityReport validityReport = infModel.validate();
-
-		for (Iterator<ValidityReport.Report> it = validityReport.getReports(); it.hasNext(); ) {
-			ValidityReport.Report o = it.next();
-
-			System.out.println(o);
-		}
 
 		infModel.write(new FileOutputStream("out.txt"), "TURTLE");
         ModelWriter.WriteModel().write(new FileOutputStream("out2.txt"), "TURTLE");
