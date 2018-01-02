@@ -95,9 +95,12 @@ sf:StarfleetMember owl:subClassOf [
     ] )
 ] .
 
+#Just for a conflict
 sf:People owl:equivalentClass owl:Nothing.
 
 sf:People owl:equivalentClass [
     rdf:type owl:Class ;
     owl:oneOf (sf:Jean-Luc_Picard sf:William_Riker)
 ] .
+
+sf:William_Riker bio:father sf:Kyle_Riker.

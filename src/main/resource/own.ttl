@@ -102,3 +102,6 @@ sf:People owl:equivalentClass [
     rdf:type owl:Class ;
     owl:oneOf (sf:Jean-Luc_Picard sf:William_Riker)
 ] .
+
+#Is a conflict but isn't checked by jena see https://jena.apache.org/documentation/inference/#owl
+#sf:William_Riker bio:father sf:Kyle_Riker.
